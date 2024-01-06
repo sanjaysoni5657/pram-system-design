@@ -1,0 +1,60 @@
+This editor is synced in real time with your peer.
+
+Use it to share thoughts and resources, such as:
+- Features scope
+- API design
+- Pseudo code for specific components
+- Data model/schema
+- Back-of-the-envelope calculations
+- Reference links
+- Link to whiteboard or diagram such as https://sketchboard.me/new
+
+Good luck!
+
+https://excalidraw.com/
+
+
+1) Funational Requirement
+  a) before the calling any API the client would check with limilter
+  b) Do we want to implement client side or server side limiter --> server side
+  c) Rate limiter should support globally.
+
+2) Non-Functional requirement
+  a) Scalable
+  b) Highly available
+  c) Low Latency
+  d) Consistent
+
+3) Assumptions and estimations
+  1) 10 million users/application to use the rate limiter
+  2) 50 million requests on daily basis per user/application
+  
+  QPS = 50 X 10^6/10^5 = 500
+  
+  storgare = 10 X 10^6 X 50 bytes = 500MB
+  
+  4) High Level Design
+  
+  User --> Web Server --> App Server --> Database
+            |
+            |
+            Rate Limiter
+ 
+ 
+ GetNode API    5 times in a day
+ SetNode API    10 timde in day
+ 
+ Map
+ GetNode --> counter
+ 
+ 
+  5) Detailed Design
+  
+  user --> LB --> (Web Server) X 10 --> AppServer--> Database
+                  |
+                  |
+                  LB (Rate Limiter) X 10 ---> Redis
+                                              GetNode --> counter
+                  
+  
+  
